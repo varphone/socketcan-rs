@@ -39,31 +39,31 @@ nb = "1"
 log = "0.4"
 byte_conv = "0.1.1"
 hex = "0.4"
-itertools = "0.10"
+itertools = "0.13"
 libc = "0.2"
-nix = "0.26"
-bitflags = "1.3"
+nix = { version = "0.29", features = ["net", "poll", "process"] }
+bitflags = "2"
 thiserror = "1.0"
 socket2 = { version = "0.5", features = ["all"] }
-clap = { version = "4.2", optional = true }
+clap = { version = "4", optional = true }
 anyhow = { version = "1.0", optional = true }
 neli = { version = "0.6", optional = true }
 tokio = { version = "1", features = ["net"], optional = true }
 mio = { version = "0.8", features = ["os-ext"], optional = true }
 futures = { version = "0.3", optional = true }
-async-io = { version = "1.13", optional = true }
-smol = { version = "1.3", optional = true }
-async-std = { version = "1.12", optional = true }
+async-io = { version = "2", optional = true }
+smol = { version = "2", optional = true }
+async-std = { version = "1", optional = true }
 
 [dev-dependencies]
 anyhow = "1.0"
 ctrlc = "3.2.2"
 nb = "1.0"
 # TODO: Is it possible to only include these for async builds?
-futures-timer = "0.3"
+futures-timer = "3"
 futures-util = "0.3"
-serial_test = { version = "2.0", features = ["async"]}
-async-std = { version = "1.12", features = ["attributes"]}
+serial_test = { version = "3", features = ["async"]}
+async-std = { version = "1", features = ["attributes"]}
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync"] }
 futures = "0.3"
 
