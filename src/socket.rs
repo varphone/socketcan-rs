@@ -157,7 +157,7 @@ pub fn set_socket_option_mult<T>(
 ///
 /// Note that a socket it created by opening it, and then closed by
 /// dropping it.
-pub trait Socket: AsRawFd {
+pub trait Socket: AsFd + AsRawFd {
     /// Open a named CAN device.
     ///
     /// Usually the more common case, opens a socket can device by name, such
@@ -248,10 +248,12 @@ pub trait Socket: AsRawFd {
 
     /// Blocking read a single can frame with timeout.
     fn read_frame_timeout(&self, timeout: Duration) -> IoResult<Self::FrameType> {
-        use nix::poll::{poll, PollFd, PollFlags};
-        let pollfd = PollFd::new(self.as_raw_fd(), PollFlags::POLLIN);
+        use nix::poll::{poll, PollFd, PollFlags, PollTimeout};
+        let pollfd = PollFd::new(self.as_fd(), PollFlags::POLLIN);
+        let polltmo = PollTimeout::try_from(timeout)
+            .map_err(|err| IoError::new(IoErrorKind::Other, format!("{}", err)))?;
 
-        match poll(&mut [pollfd], timeout.as_millis() as c_int)? {
+        match poll(&mut [pollfd], polltmo)? {
             0 => Err(IoErrorKind::TimedOut.into()),
             _ => self.read_frame(),
         }
