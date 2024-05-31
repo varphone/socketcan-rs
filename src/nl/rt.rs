@@ -94,7 +94,7 @@ impl<'a> FromBytes<'a> for can_bittiming_const {
 
 impl Size for can_bittiming_const {
     fn unpadded_size(&self) -> usize {
-        std::mem::size_of::<can_bittiming_const>()
+        mem::size_of::<can_bittiming_const>()
     }
 }
 
@@ -265,7 +265,7 @@ pub mod tests {
             unsafe {
                 std::slice::from_raw_parts::<'_, u8>(
                     &timing as *const _ as *const u8,
-                    std::mem::size_of::<can_bittiming>(),
+                    mem::size_of::<can_bittiming>(),
                 )
             },
             as_bytes(&timing)
